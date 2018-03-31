@@ -5,14 +5,16 @@ const spotifyUrl = `https://accounts.spotify.com/authorize?response_type=token&s
 let accessToken = undefined;
 let expiresIn = undefined;
 
-const apiURL = 'https://api.spotify.com/v1';
-const headers = { headers: { Authorization: `Bearer ${accessToken}` } };
+//const apiURL = 'https://api.spotify.com/v1';
+//const headers = { headers: { Authorization: `Bearer ${accessToken}` } };
 
 const Spotify = {
     getAccessToken() {
         // Check if we have the token, if so, return it.
         if (accessToken) {
-            console.log('Token and Expiration are present: Line 26 Spotify.js');
+            console.log('AccessToken is present // L15 Spotify.js');
+            return accessToken;
+        } else {
             return accessToken;
         }
 
@@ -26,7 +28,7 @@ const Spotify = {
             // Wipe the parameters from the URL so the app doesnt try to grab it after its expired
             window.setTimeout(() => accessToken = '', expiresIn * 1000);
             window.history.pushState('Access Token', null, '/');
-            console.log('Token and Expiration are present: Line 26 Spotify.js');
+            console.log('Token and Expiration are present // L31 Spotify.js');
         } else {
             // Check if token variable is empty and not in URL
             window.location = spotifyUrl;
