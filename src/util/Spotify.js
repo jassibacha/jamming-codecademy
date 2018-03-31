@@ -12,8 +12,8 @@ const Spotify = {
     getAccessToken() {
         // Check if we have the token, if so, return it.
         if (accessToken) {
+            console.log('Token and Expiration are present: Line 26 Spotify.js');
             return accessToken;
-            //console.log('We have an access token! Line: 13 Spotify.js');
         }
 
         const urlAccessToken = window.location.href.match(/access_token=([^&]*)/);
@@ -35,6 +35,7 @@ const Spotify = {
 
     search(term) {
         const searchUrl = `https://api.spotify.com/v1/search?type=track&q=${term}`;
+        const accessToken = Spotify.getAccessToken();
         return fetch(searchUrl, {
             headers: {
                 Authorization: `Bearer ${accessToken}`
