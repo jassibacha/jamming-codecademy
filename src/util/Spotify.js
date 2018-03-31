@@ -74,7 +74,7 @@ const Spotify = {
         .then(response => response.json())
         .then(() => {
             const createPlaylistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
-            console.log('We creating a playlist for UserId ' + userId + '! L74');
+            console.log('We creating a playlist for UserId ' + userId + '! Line74');
             fetch(createPlaylistUrl, {
                 method: 'POST',
                 headers: headers,
