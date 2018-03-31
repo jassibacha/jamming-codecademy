@@ -17,41 +17,9 @@ class App extends React.Component {
         this.search = this.search.bind(this);
 
         this.state = {
-        	searchResults: [
-                {
-                    name: 'Bexey',
-                    artist: 'Lil Jules',
-                    album: 'Bexey EP',
-                    id: 1
-                },
-                {
-                    name: 'Test Song 2',
-                    artist: 'Lil Jules',
-                    album: 'The Purple Cup Chronicles',
-                    id: 2
-                },
-                {
-                    name: 'Test Song 3',
-                    artist: 'Lil Jules',
-                    album: 'Lil Peep Religion',
-                    id: 3
-                }
-            ],
+        	searchResults: [],
             playlistName: 'New Playlist',
-            playlistTracks: [
-                {
-                    name: '6AM Dalaran Sewers ft. Yung Thangos',
-                    artist: 'Lil Jules',
-                    album: 'Insomnia',
-                    id: 4
-                },
-                {
-                    name: 'Screech',
-                    artist: 'Lil Jules',
-                    album: 'My First EP',
-                    id: 5
-                }
-            ],
+            playlistTracks: [],
         }
     }
 

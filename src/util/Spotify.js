@@ -53,8 +53,8 @@ const Spotify = {
         });
     },
 
-    savePlaylist(name, trackUris) {
-        if (!name || !trackUris) {
+    savePlaylist(playlistName, trackURIs) {
+        if (!playlistName || !trackURIs || trackURIs.length === 0) {
             return;
         }
         const userUrl = 'https://api.spotify.com/v1/me';
@@ -71,27 +71,29 @@ const Spotify = {
         .then(response => response.json())
         .then(() => {
             const createPlaylistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
+            console.log('We creating a playlist for UserId ' + userId + '! L74');
             fetch(createPlaylistUrl, {
                 method: 'POST',
                 headers: headers,
                 body: JSON.stringify({
-                    name: name
+                    name: playlistName
                 })
             })
             .then(response => response.json())
             .then(jsonResponse => playlistId = jsonResponse.id)
             .then(() => {
+                console.log("Spotify.playlistid: " + playlistId);
                 const addPlaylistTracksUrl = `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`;
                 fetch(addPlaylistTracksUrl, {
                     method: 'POST',
                     headers: headers,
                     body: JSON.stringify({
-                      uris: trackUris
+                      uris: trackURIs
                     })
-                });
+                }).then(response => console.log("Spotify said: " + response));
+               // console.log('We ran addPlaylistTracksUrl fetch -- spotify.js Line 86');
             })
         })
-    
     }
 };
 
