@@ -5,6 +5,9 @@ const spotifyUrl = `https://accounts.spotify.com/authorize?response_type=token&s
 let accessToken = undefined;
 let expiresIn = undefined;
 
+const apiURL = 'https://api.spotify.com/v1';
+const headers = { headers: { Authorization: `Bearer ${accessToken}` } };
+
 const Spotify = {
     getAccessToken() {
         // Check if we have the token, if so, return it.

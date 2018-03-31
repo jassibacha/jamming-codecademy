@@ -10,17 +10,23 @@ class App extends React.Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+        	searchResults: [],
+            playlistName: 'New Playlist',
+            playlistTracks: [],
+        }
+
         this.addTrack = this.addTrack.bind(this);
         this.removeTrack = this.removeTrack.bind(this);
         this.updatePlaylistName = this.updatePlaylistName.bind(this);
         this.savePlaylist = this.savePlaylist.bind(this);
         this.search = this.search.bind(this);
 
-        this.state = {
-        	searchResults: [],
-            playlistName: 'New Playlist',
-            playlistTracks: [],
-        }
+        // this.state = {
+        // 	searchResults: [],
+        //     playlistName: 'New Playlist',
+        //     playlistTracks: [],
+        // }
     }
 
     // Add Track to Playlist
@@ -57,7 +63,9 @@ class App extends React.Component {
           searchResults: []
         });
         this.updatePlaylistName('New Playlist');
-    console.info(trackURIs);
+
+        console.log('Save Playlist Fired! Array Info:')
+        console.info(trackURIs);
 
     }
 
@@ -69,10 +77,14 @@ class App extends React.Component {
     //}
 
     search(term) {
-        Spotify.search(term)
-        .then(searchResults => this.setState({
-            searchResults: searchResults
-        }));
+        // Spotify.search(term)
+        // .then(searchResults => this.setState({
+        //     searchResults: searchResults
+        // }));
+        Spotify.search(term).then(searchResults => {
+            this.setState({searchResults: searchResults});
+        });  
+
         console.log('Search fired! Line 108 App.js');
     }
 
