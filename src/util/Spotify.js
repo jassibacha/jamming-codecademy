@@ -15,6 +15,7 @@ const Spotify = {
             console.log('AccessToken is present // L15 Spotify.js');
             return accessToken;
         } else {
+            console.log('AccessToken is NOT present // L18 Spotify.js');
             return accessToken;
         }
 
@@ -59,48 +60,87 @@ const Spotify = {
         });
     },
 
-    savePlaylist(playlistName, trackURIs) {
-        if (!playlistName || !trackURIs || trackURIs.length === 0) {
-            return;
+    savePlaylist(playlistName, trackUris) {
+        if (!playlistName || !trackUris.length) {
+          return;
         }
-        const userUrl = 'https://api.spotify.com/v1/me';
-        const headers = {
-            Authorization: `Bearer ${accessToken}`
-        }
-        //let accessToken = 'usersaccesstoken'
-        let userId = undefined;
-        let playlistId = undefined;
+        const accessToken = Spotify.getAccessToken();
+        const headers = { Authorization: `Bearer ${accessToken}` };
 
-        fetch(userUrl, {
+        let userId = undefined;
+
+        return fetch('https://api.spotify.com/v1/me', {
             headers: headers
         })
         .then(response => response.json())
-        .then(() => {
-            const createPlaylistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
-            console.log('We creating a playlist for UserId ' + userId + '! Line74');
-            fetch(createPlaylistUrl, {
-                method: 'POST',
+        .then(jsonResponse => {
+            userId = jsonResponse.id;
+            console.log('We creating a playlist for UserId ' + userId + '! Line77');
+            return fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
                 headers: headers,
-                body: JSON.stringify({
-                    name: playlistName
-                })
+                method: 'POST',
+                body: JSON.stringify({name: playlistName})
             })
             .then(response => response.json())
-            .then(jsonResponse => playlistId = jsonResponse.id)
-            .then(() => {
+            .then(jsonResponse => {
+                const playlistId = jsonResponse.id;
                 console.log("Spotify.playlistid: " + playlistId);
-                const addPlaylistTracksUrl = `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`;
-                fetch(addPlaylistTracksUrl, {
-                    method: 'POST',
+                return fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`, {
                     headers: headers,
-                    body: JSON.stringify({
-                      uris: trackURIs
-                    })
-                }).then(response => console.log("Spotify said: " + response));
-               // console.log('We ran addPlaylistTracksUrl fetch -- spotify.js Line 86');
-            })
-        })
+                    method: 'POST',
+                    body: JSON.stringify({uris: trackUris})
+                });
+            });
+        });
     }
+
+
+    // // Old Saveplaylist
+    // savePlaylist(playlistName, trackURIs) {
+    //     if (!playlistName || !trackURIs || trackURIs.length === 0) {
+    //         return;
+    //     }
+    //     // Give them the accessToken!
+    //     const accessToken = Spotify.getAccessToken();
+
+    //     const userUrl = 'https://api.spotify.com/v1/me';
+    //     const headers = {
+    //         Authorization: `Bearer ${accessToken}`
+    //     }
+    //     //let accessToken = 'usersaccesstoken'
+    //     let userId = undefined;
+    //     let playlistId = undefined;
+
+    //     fetch(userUrl, {
+    //         headers: headers
+    //     })
+    //     .then(response => response.json())
+    //     .then(() => {
+    //         const createPlaylistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
+    //         console.log('We creating a playlist for UserId ' + userId + '! Line74');
+    //         fetch(createPlaylistUrl, {
+    //             method: 'POST',
+    //             headers: headers,
+    //             body: JSON.stringify({
+    //                 name: playlistName
+    //             })
+    //         })
+    //         .then(response => response.json())
+    //         .then(jsonResponse => playlistId = jsonResponse.id)
+    //         .then(() => {
+    //             console.log("Spotify.playlistid: " + playlistId);
+    //             const addPlaylistTracksUrl = `https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks`;
+    //             fetch(addPlaylistTracksUrl, {
+    //                 method: 'POST',
+    //                 headers: headers,
+    //                 body: JSON.stringify({
+    //                   uris: trackURIs
+    //                 })
+    //             }).then(response => console.log("Spotify said: " + response));
+    //            // console.log('We ran addPlaylistTracksUrl fetch -- spotify.js Line 86');
+    //         })
+    //     })
+    // }
 };
 
 export default Spotify;
