@@ -71,6 +71,7 @@ const Spotify = {
         .then(response => response.json())
         .then(() => {
             const createPlaylistUrl = `https://api.spotify.com/v1/users/${userId}/playlists`;
+            console.log('We creating a playlist! Spotify.js Line 74');
             fetch(createPlaylistUrl, {
                 method: 'POST',
                 headers: headers,
@@ -89,6 +90,7 @@ const Spotify = {
                       uris: trackUris
                     })
                 });
+                console.log('We ran addPlaylistTracksUrl fetch -- spotify.js Line 86');
             })
         })
     
