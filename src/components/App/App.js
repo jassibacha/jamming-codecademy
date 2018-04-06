@@ -86,12 +86,12 @@ class App extends React.Component {
     filterSearchResults(searchResults) {
       // filter searchResults!
       return searchResults.filter((searchTrack) => {
-          // check playlistTracks to see if there's any matching id, instantly
-          // return (instead of continuing the iteration) and return false to remove it
-          return !this.state.playlistTracks.some((playlistTrack) => {
-              return searchTrack.id === playlistTrack.id;
-          });
-      });
+            // check playlistTracks to see if there's any matching id, instantly
+            // return (instead of continuing the iteration) and return false to remove it
+            return !this.state.playlistTracks.some((playlistTrack) => {
+                return searchTrack.id === playlistTrack.id;
+            });
+        });
 	}
 
     render() {
