@@ -27,19 +27,21 @@ class App extends React.Component {
     addTrack(track) {
         // Check if track is not in the playlist (playlistTracks)
         if (this.state.playlistTracks.every(playlistTrack => playlistTrack.id !== track.id)) {
-			// Add to end of playlist
-      let index = this.state.searchResults.findIndex((searchTrack) => { searchTrack.id === track.id})
-			let searchResults = this.state.searchResults.splice(index - 1, index);
+            // Get search results without added track
+            let searchResults = this.state.searchResults.filter((searchTrack) => {
+                return searchTrack.id != track.id;
+            });
+            // Add to end of playlist
             let newPlaylistTracks = this.state.playlistTracks.concat(track);
-            // Set new state of the playlist
-			this.setState({playlistTracks: newPlaylistTracks, searchResults: searchResults});
+            // Set new state of the playlist and search results
+            this.setState({ playlistTracks: newPlaylistTracks, searchResults });
         }
     }
+
     // Remove Track from Playlist
     removeTrack(track) {
 
-        let newPlaylistTracks = this.state.playlistTracks.filter(playlistTrack => playlistTrack.id !== track.id);
-            
+        let newPlaylistTracks = this.state.playlistTracks.filter(playlistTrack => playlistTrack.id !== track.id);            
         this.setState({playlistTracks: newPlaylistTracks});
     }
 
@@ -87,10 +89,10 @@ class App extends React.Component {
           // check playlistTracks to see if there's any matching id, instantly
           // return (instead of continuing the iteration) and return false to remove it
           return !this.state.playlistTracks.some((playlistTrack) => {
-              searchTrack.id === playlistTrack.id
+              return searchTrack.id === playlistTrack.id;
           });
       });
-		}
+	}
 
     render() {
         return (
