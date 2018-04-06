@@ -28,9 +28,11 @@ class App extends React.Component {
         // Check if track is not in the playlist (playlistTracks)
         if (this.state.playlistTracks.every(playlistTrack => playlistTrack.id !== track.id)) {
 			// Add to end of playlist
+      let index = this.state.searchResults.findIndex((searchTrack) => { searchTrack.id === track.id})
+			let searchResults = this.state.searchResults.splice(index - 1, index);
             let newPlaylistTracks = this.state.playlistTracks.concat(track);
             // Set new state of the playlist
-			this.setState({playlistTracks: newPlaylistTracks});
+			this.setState({playlistTracks: newPlaylistTracks, searchResults: searchResults});
         }
     }
     // Remove Track from Playlist
@@ -71,16 +73,24 @@ class App extends React.Component {
     //}
 
     search(term) {
-        // Spotify.search(term)
-        // .then(searchResults => this.setState({
-        //     searchResults: searchResults
-        // }));
         Spotify.search(term).then(searchResults => {
-            this.setState({searchResults: searchResults});
+        		let filteredResults = this.filterSearchResults(searchResults);
+            this.setState({searchResults: filteredResults});
         });  
 
         console.log('Search fired! Line 108 App.js');
     }
+    
+    filterSearchResults(searchResults) {
+      // filter searchResults!
+      return searchResults.filter((searchTrack) => {
+          // check playlistTracks to see if there's any matching id, instantly
+          // return (instead of continuing the iteration) and return false to remove it
+          return !this.state.playlistTracks.some((playlistTrack) => {
+              searchTrack.id === playlistTrack.id
+          });
+      });
+		}
 
     render() {
         return (
